@@ -3,18 +3,18 @@ apply plugin: 'com.android.library'
 ext {
     PUBLISH_GROUP_ID = 'com.furiousseraphim.chips'
     PUBLISH_ARTIFACT_ID = 'material-chips'
-    PUBLISH_VERSION = '1.2.7'
+    PUBLISH_VERSION = '1.3.0'
 }
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.3"
+    compileSdkVersion 24
+    buildToolsVersion "24.0.2"
 
     defaultConfig {
         minSdkVersion 16
-        targetSdkVersion 23
-        versionCode 127
-        versionName "1.2.7"
+        targetSdkVersion 24
+        versionCode 130
+        versionName "1.3.0"
         setProperty("archivesBaseName", "material-chips-$versionName")
     }
     buildTypes {
@@ -27,13 +27,7 @@ android {
 
 dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'de.hdodenhof:circleimageview:2.0.0'
-    compile('com.rengwuxian.materialedittext:library:2.1.4') {
-        exclude module: 'appcompat-v7'
-        exclude module: 'support-annotations'
-    }
-    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:24.2.1'
 }
 
 task sourcesJar(type: Jar) {

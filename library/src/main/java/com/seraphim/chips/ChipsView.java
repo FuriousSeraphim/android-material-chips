@@ -34,6 +34,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.request.target.ImageViewTarget;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -119,10 +120,10 @@ public class ChipsView extends ScrollView implements ChipsEditText.InputConnecti
 
     @Override
     public boolean requestFocus(int direction, Rect previouslyFocusedRect) {
-        if (editText==null) return super.requestFocus(direction, previouslyFocusedRect);
+        if (editText == null) return super.requestFocus(direction, previouslyFocusedRect);
         return editText.requestFocus();
     }
-        
+
     @Override
     protected boolean onRequestFocusInDescendants(int direction, Rect previouslyFocusedRect) {
         return true;
@@ -189,10 +190,9 @@ public class ChipsView extends ScrollView implements ChipsEditText.InputConnecti
         editTextParams.bottomMargin = (int) (SPACING_BOTTOM * density) + verticalSpacing;
         editText.setLayoutParams(editTextParams);
         editText.setMinHeight((int) (CHIP_HEIGHT * density));
-        editText.setPaddings(0, 0, 0, 0);
+        editText.setPadding(0, 0, 0, 0);
         editText.setLineSpacing(verticalSpacing, (CHIP_HEIGHT * density) / editText.getLineHeight());
         editText.setBackgroundColor(Color.argb(0, 0, 0, 0));
-        editText.setHideUnderline(true);
         editText.setImeOptions(EditorInfo.IME_ACTION_DONE | EditorInfo.IME_FLAG_NO_EXTRACT_UI);
         editText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         editText.setOnEditorActionListener(this);
@@ -253,6 +253,28 @@ public class ChipsView extends ScrollView implements ChipsEditText.InputConnecti
         });
     }
 
+    public void addChips(Collection<ChipEntry> entries) {
+        addChips(entries, false);
+    }
+
+    public void addChips(Collection<ChipEntry> entries, boolean isIndelible) {
+        for (ChipEntry entry : entries) {
+            Chip chip = new Chip(entry, isIndelible);
+            chipList.add(chip);
+            if (chipsListener != null) {
+                chipsListener.onChipAdded(chip);
+            }
+        }
+
+        onChipsChanged(true);
+        post(new Runnable() {
+            @Override
+            public void run() {
+                fullScroll(View.FOCUS_DOWN);
+            }
+        });
+    }
+
     @NonNull
     public List<Chip> getChips() {
         return Collections.unmodifiableList(chipList);
@@ -267,6 +289,11 @@ public class ChipsView extends ScrollView implements ChipsEditText.InputConnecti
             }
         }
         return false;
+    }
+
+    public void removeAllChips() {
+        chipList.clear();
+        onChipsChanged(true);
     }
 
     public void setChipsListener(ChipsListener chipsListener) {
@@ -291,12 +318,20 @@ public class ChipsView extends ScrollView implements ChipsEditText.InputConnecti
 
     public void setMode(Mode mode) {
         this.mode = mode;
+        if (mode == Mode.NONE) {
+            editText.setInputType(InputType.TYPE_NULL);
+            editText.setFocusable(false);
+            editText.setFocusableInTouchMode(false);
+        } else {
+            editText.setInputType(InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+            editText.setFocusable(true);
+            editText.setFocusableInTouchMode(true);
+        }
     }
 
     public void setFactory(ChipsFactory factory) {
         this.factory = factory;
     }
-
     //</editor-fold>
 
     //<editor-fold desc="Private Methods">
@@ -662,9 +697,7 @@ public class ChipsView extends ScrollView implements ChipsEditText.InputConnecti
         }
     }
 
-    public enum Mode {
-        ONLY_SUGGESTIONS, ALL
-    }
+    public enum Mode {NONE, ONLY_SUGGESTIONS, ALL}
 
     private class DefaultFactory implements ChipsFactory {
         @Override

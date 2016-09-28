@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -33,12 +34,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
-import com.rengwuxian.materialedittext.MaterialAutoCompleteTextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-class ChipsEditText extends MaterialAutoCompleteTextView implements AdapterView.OnItemClickListener {
+class ChipsEditText extends AutoCompleteTextView implements AdapterView.OnItemClickListener {
     private InputConnectionWrapperInterface inputConnectionWrapperInterface;
     private ItemClickListener itemClickListener;
     private ChipsAdapter adapter;
@@ -169,7 +169,7 @@ class ChipsEditText extends MaterialAutoCompleteTextView implements AdapterView.
             notifyDataSetChanged();
         }
 
-        void setCurrentEntries(List<ChipEntry> entries){
+        void setCurrentEntries(List<ChipEntry> entries) {
             currentEntries.clear();
             currentEntries.addAll(entries);
         }

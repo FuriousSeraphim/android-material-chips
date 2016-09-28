@@ -25,7 +25,7 @@ buildscript {
 }
 
 dependencies {
-    compile 'com.furiousseraphim.chips:material-chips:1.2.7'
+    compile 'com.furiousseraphim.chips:material-chips:1.3.0'
 }
 ```
 

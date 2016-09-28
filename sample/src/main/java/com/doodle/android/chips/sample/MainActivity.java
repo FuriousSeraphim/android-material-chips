@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         chipsView = (ChipsView) findViewById(R.id.cv_contacts);
-//        chipsView.setMode(ChipsView.Mode.ONLY_SUGGESTIONS);
+        chipsView.setMode(ChipsView.Mode.NONE);
 
         final List<ChipEntry> entries = new ArrayList<>();
         entries.add(new SimpleChipEntry("example 1"));
@@ -33,9 +33,10 @@ public class MainActivity extends AppCompatActivity {
         entries.add(new SimpleChipEntry("example 6", "http://lifehacker.ru/wp-content/uploads/2014/11/14-14.png"));
         entries.add(new SimpleChipEntry("example 7"));
         entries.add(new SimpleChipEntry("example 11"));
-        chipsView.setSuggestions(entries);
-        chipsView.setChipsFilter(new CustomFilter());
-        chipsView.setFactory(new CustomFactory());
+//        chipsView.setSuggestions(entries);
+        chipsView.addChips(entries);
+//        chipsView.setChipsFilter(new CustomFilter());
+//        chipsView.setFactory(new CustomFactory());
     }
 
     public class CustomFilter implements ChipsEntriesFilter {
